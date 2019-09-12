@@ -5,22 +5,26 @@ const path = require('path');
  * ソースコードを書き込む
  * */
 exports.writeSourceCode = function (outDir, contestId, submissionId, language, sourceCode) {
-    const sourceCodeDir = path.join(outDir, contestId, language);
+    return new Promise((resolve, reject) => {
+        const sourceCodeDir = path.join(outDir, contestId, language);
 
-    // ディレクトリがないときは同期的にディレクトリを作る
-    if (!fs.existsSync(sourceCodeDir)) {
-        fs.mkdirSync(sourceCodeDir, {recursive: true});
-    }
+        // ディレクトリがないときは同期的にディレクトリを作る
+        if (!fs.existsSync(sourceCodeDir)) {
+            fs.mkdirSync(sourceCodeDir, {recursive: true});
+        }
 
-    const sourceCodePath = path.join(sourceCodeDir, `${submissionId}.java`);
-    const writer = fs.createWriteStream(sourceCodePath, 'utf8');
-    writer.on('finish', () => {
-        console.log(`Write source code to ${sourceCodePath}`);
-        writer.close();
+        const sourceCodePath = path.join(sourceCodeDir, `${submissionId}.java`);
+        const writer = fs.createWriteStream(sourceCodePath, 'utf8');
+        writer.on('finish', () => {
+            console.log(`Write source code to ${sourceCodePath}`);
+            writer.close();
+            resolve();
+        });
+        writer.on('error', function () {
+            console.log(`Cannot write file ${sourceCodePath}`);
+            writer.close();
+            reject();
+        });
+        writer.write(sourceCode);
     });
-    writer.on('error', function () {
-        console.log(`Cannot write file ${sourceCodePath}`);
-        writer.close();
-    });
-    writer.write(sourceCode);
 };
