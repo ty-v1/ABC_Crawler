@@ -9,17 +9,18 @@ exports.writeSourceCode = function (outDir, contestId, submissionId, langague, s
 
     // ディレクトリがないときは同期的にディレクトリを作る
     if (!fs.existsSync(sourceCodeDir)) {
-        fs.mkdir(sourceCodeDir);
+        fs.mkdirSync(sourceCodeDir, {recursive: true});
     }
 
     const sourceCodePath = path.join(sourceCodeDir, `${submissionId}.java`);
     const writer = fs.createWriteStream(sourceCodePath, 'utf8');
-    write.on('finish', () => {
+    writer.on('finish', () => {
         console.log(`Write source code to ${sourceCodePath}`);
+        writer.close();
     });
-    write.on('error', function () {
+    writer.on('error', function () {
         console.log(`Cannot write file ${sourceCodePath}`);
+        writer.close();
     });
     writer.write(sourceCode);
-    writer.close();
 };
