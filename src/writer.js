@@ -26,5 +26,6 @@ exports.writeSourceCode = function (outDir, contestId, submissionId, language, s
             reject();
         });
         writer.write(sourceCode);
+        writer.end();
     });
 };
