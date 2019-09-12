@@ -1,7 +1,9 @@
 exports.definitions = optionDefinitions = [
     {
         name: 'all',
-        type: Boolean
+        alias: 'a',
+        type: Boolean,
+        defaultValue: false
     },
     {
         name: 'contest',
