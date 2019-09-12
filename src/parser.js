@@ -2,6 +2,19 @@ const cheerio = require('cheerio');
 const _ = require('lodash');
 
 /**
+ * 提出一覧ページからページ数を取得する
+ * */
+exports.getTotalPages = function (htmlDocument) {
+    const $ = cheerio.load(htmlDocument);
+    const ul = $('.pagination')[0];
+
+    const pages = ul.children.filter(e => e.name === 'li')
+        .map(li => li.children[0].children[0].data);
+
+    return parseInt(_.last(pages));
+};
+
+/**
  * 提出一覧ページをパースしてIDを取得する
  * */
 exports.parseSubmissionListPage = function (htmlDocument) {
