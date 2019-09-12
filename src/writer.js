@@ -21,4 +21,5 @@ exports.writeSourceCode = function (outDir, contestId, submissionId, langague, s
         console.log(`Cannot write file ${sourceCodePath}`);
     });
     writer.write(sourceCode);
+    writer.close();
 };
