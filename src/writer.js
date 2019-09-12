@@ -4,8 +4,8 @@ const path = require('path');
 /**
  * ソースコードを書き込む
  * */
-exports.writeSourceCode = function (outDir, contestId, submissionId, langague, sourceCode) {
-    const sourceCodeDir = path.join(outDir, contestId, langague);
+exports.writeSourceCode = function (outDir, contestId, submissionId, language, sourceCode) {
+    const sourceCodeDir = path.join(outDir, contestId, language);
 
     // ディレクトリがないときは同期的にディレクトリを作る
     if (!fs.existsSync(sourceCodeDir)) {
