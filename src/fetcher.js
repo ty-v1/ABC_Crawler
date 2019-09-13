@@ -19,7 +19,7 @@ const languages = {
  * 提出一覧ページを取得する
  * */
 exports.fetchSubmissionListPage = async function (contestId, taskId, language, page) {
-    await sleep(2000);
+    await sleep(1500);
 
     const contestName = `abc${formatter(contestId)}`;
     const taskName = `${contestName}_${taskId}`;
@@ -39,7 +39,7 @@ exports.fetchSubmissionListPage = async function (contestId, taskId, language, p
  * 提出ページを取得する
  * */
 exports.fetchSubmissionPage = async function (path) {
-    await sleep(2000);
+    await sleep(1500);
 
     const option = {
         url: `https://atcoder.jp${path}`
