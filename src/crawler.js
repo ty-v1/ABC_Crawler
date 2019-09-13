@@ -7,7 +7,15 @@ async function crawleAll(outDir, language) {
     try {
         let contest = 1;
         while (true) {
-            await crawle(outDir, contest, language);
+            try {
+                await crawle(outDir, contest, language);
+            } catch (error) {
+                // 404の時のみ終了する
+                if (error.name === 'StatusCodeError' && error.stausCode === 404) {
+                    return;
+                }
+                console.error(error)
+            }
             contest++;
         }
     } catch (error) {
@@ -27,9 +35,14 @@ async function crawle(outDir, contest, language) {
 
     // 2ページ目以降をクロール
     for (let page = 2; page < totalPage; page++) {
-        const submissionListPage
-            = await fetcher.fetchSubmissionListPage(contest, taskId, language, page);
-        await writeToFile(submissionListPage, outDir, contest, language);
+        try {
+            // エラーが起きても実行を続ける
+            const submissionListPage
+                = await fetcher.fetchSubmissionListPage(contest, taskId, language, page);
+            await writeToFile(submissionListPage, outDir, contest, language);
+        } catch (error) {
+            console.error(error)
+        }
     }
 }
 
