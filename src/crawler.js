@@ -45,7 +45,7 @@ async function crawle(outDir, contest, task, language) {
         try {
             // エラーが起きても実行を続ける
             const submissionListPage
-                = await fetcher.fetchSubmissionListPage(contest, taskId, language, page);
+                = await fetcher.fetchSubmissionListPage(contest, task, language, page);
             await writeToFile(submissionListPage, outDir, contest, task, language);
         } catch (error) {
             console.error(error)
