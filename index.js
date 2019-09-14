@@ -10,9 +10,9 @@ async function run(options) {
         const language = languages[i];
 
         if (options['all']) {
-            await crawler.crawleAll(outDir, language);
+            await crawler.crawleAll(outDir, options['task'], language);
         } else {
-            await crawler.crawle(outDir, options['contest'], language);
+            await crawler.crawle(outDir, options['contest'], options['task'], language);
         }
     }
 }

@@ -11,6 +11,11 @@ exports.definitions = optionDefinitions = [
         defaultValue: 1
     },
     {
+        name: 'task',
+        type: String,
+        defaultValue: 'a'
+    },
+    {
         name: 'out',
         defaultValue: process.cwd(),
         type: String,
