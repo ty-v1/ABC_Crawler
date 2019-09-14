@@ -15,12 +15,22 @@ const languages = {
     'java8': 3016,
 };
 
+const taskMap = {
+    a: '1',
+    b: '2',
+    c: '3',
+    d: '4',
+    e: '5',
+    f: '6'
+};
+
 /**
  * 提出一覧ページを取得する
  * */
-exports.fetchSubmissionListPage = async function (contestId, taskId, language, page) {
+exports.fetchSubmissionListPage = async function (contestId, task, language, page) {
     await sleep(1500);
 
+    const taskId = (contestId < 20) ? taskMap[task] : task;
     const contestName = `abc${formatter(contestId)}`;
     const taskName = `${contestName}_${taskId}`;
     const option = {
