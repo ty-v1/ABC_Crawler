@@ -15,6 +15,8 @@ async function crawleAll(outDir, task, language) {
                     return;
                 }
                 console.log(error);
+                // エラーのときはもう一度
+                continue;
             }
             contest++;
         }
@@ -48,7 +50,15 @@ async function crawle(outDir, contest, task, language) {
                 = await fetcher.fetchSubmissionListPage(contest, task, language, page);
             await writeToFile(submissionListPage, outDir, contest, task, language);
         } catch (error) {
+            // 404の時のみ終了する
+            if (error.name === 'StatusCodeError' && error.stausCode === 404) {
+                console.log('404 Error');
+                return;
+            }
+
             console.log(error);
+            // エラーが出たら同じページをもう一回クロールする
+            page--;
         }
     }
 }
