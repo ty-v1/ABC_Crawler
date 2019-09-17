@@ -14,7 +14,7 @@ async function crawleAll(outDir, task, language) {
                 if (error.name === 'StatusCodeError' && error.stausCode === 404) {
                     return;
                 }
-                console.error(error)
+                console.log(error)
             }
             contest++;
         }
@@ -48,7 +48,7 @@ async function crawle(outDir, contest, task, language) {
                 = await fetcher.fetchSubmissionListPage(contest, task, language, page);
             await writeToFile(submissionListPage, outDir, contest, task, language);
         } catch (error) {
-            console.error(error)
+            console.log(error)
         }
     }
 }
