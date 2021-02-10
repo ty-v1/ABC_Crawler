@@ -37,7 +37,7 @@ exports.fetchSubmissionListPage = async function (contestId, task, language, pag
         url: `https://atcoder.jp/contests/${contestName}/submissions`,
         qs: {
             'f.Task': taskName,
-            'f.Language': languages[language],
+            'f.LanguageName': languages[language],
             'f.Status': 'AC',
             page
         }
