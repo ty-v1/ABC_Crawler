@@ -68,7 +68,7 @@ async function writeToDB(submissionListPage, options, contest, task, language) {
         const code = parser.parseSubmissionPage(text);
         const submission = {
             submissionId: Number.parseInt(id),
-            contentId: contest,
+            contentId: Number.parseInt(contest),
             code,
             language,
             task: task.toUpperCase(),
