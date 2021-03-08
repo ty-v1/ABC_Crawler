@@ -7,6 +7,7 @@ async function crawleAll(options, task, language) {
     let contest = 1;
     while (true) {
         try {
+            console.log(`Contest: ${contest}`);
             await crawle(options, contest, task, language);
         } catch (error) {
             // 404の時のみ終了する
