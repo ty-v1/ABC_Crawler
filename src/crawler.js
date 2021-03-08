@@ -23,6 +23,7 @@ async function crawleAll(options, task, language) {
 }
 
 async function crawle(options, contest, task, language) {
+    console.log(`Contest: ${contest}`);
     // 125回以前はe問題とf問題はない
     if (contest <= 125) {
         switch (task) {
