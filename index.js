@@ -10,9 +10,9 @@ async function run(options) {
         const language = languages[i];
 
         if (options['all']) {
-            await crawler.crawleAll(outDir, options['task'], language);
+            await crawler.crawleAll(options, options['task'], language);
         } else {
-            await crawler.crawle(outDir, options['contest'], options['task'], language);
+            await crawler.crawle(options, options['contest'], options['task'], language);
         }
     }
 }
@@ -21,7 +21,6 @@ function logConfig(options) {
     console.log('=========================\n');
 
     console.log(`All: ${options['all']}`);
-    console.log(`OutDir: ${options['out']}`);
     if (options['all']) {
         console.log(`Contest: ${options['contest']}`);
     }
@@ -34,4 +33,9 @@ function logConfig(options) {
 // 引数をパースする
 const options = commandLineArgs(definitions);
 logConfig(options);
-run(options).then(() => console.log('finish'));
+run(options)
+    .then(() => console.log('finish'))
+    .catch((e) => {
+        console.error(e);
+        process.exit(1);
+    })

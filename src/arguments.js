@@ -16,15 +16,32 @@ exports.definitions = optionDefinitions = [
         defaultValue: 'a'
     },
     {
-        name: 'out',
-        defaultValue: process.cwd(),
+        name: 'langs',
+        defaultValue: ['Java'],
+        type: String,
+        multiple: true
+    },
+    {
+        name: 'host',
+        defaultValue: '127.0.0.1',
         type: String,
     },
     {
-        name: 'langs',
-        defaultValue: ['java8'],
+        name: 'port',
+        defaultValue: 27017,
         type: String,
-        multiple: true
-    }
+    },
+    {
+        name: 'db',
+        type: String,
+    },
+    {
+        name: 'username',
+        type: String,
+    },
+    {
+        name: 'password',
+        type: String,
+    },
 ];
 
