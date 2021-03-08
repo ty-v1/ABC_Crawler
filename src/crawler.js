@@ -2,30 +2,26 @@ const fetcher = require('./fetcher');
 const parser = require('./parser');
 const writer = require('./writer');
 
-async function crawleAll(outDir, task, language) {
+async function crawleAll(options, task, language) {
     // 404が返ってくるまで行う
-    try {
-        let contest = 1;
-        while (true) {
-            try {
-                await crawle(outDir, contest, task, language);
-            } catch (error) {
-                // 404の時のみ終了する
-                if (error.name === 'StatusCodeError' && error.stausCode === 404) {
-                    return;
-                }
-                console.log(error);
-                // エラーのときはもう一度
-                continue;
+    let contest = 1;
+    while (true) {
+        try {
+            await crawle(options, contest, task, language);
+        } catch (error) {
+            // 404の時のみ終了する
+            if (error.name === 'StatusCodeError' && error.stausCode === 404) {
+                return;
             }
-            contest++;
+            console.log(error);
+            // エラーのときはもう一度
+            continue;
         }
-    } catch (error) {
-        console.error(error);
+        contest++;
     }
 }
 
-async function crawle(outDir, contest, task, language) {
+async function crawle(options, contest, task, language) {
     // 125回以前はe問題とf問題はない
     if (contest <= 125) {
         switch (task) {
@@ -40,7 +36,7 @@ async function crawle(outDir, contest, task, language) {
     const firstSubmissionListPage
         = await fetcher.fetchSubmissionListPage(contest, task, language, page);
     const totalPage = parser.getTotalPages(firstSubmissionListPage);
-    await writeToFile(firstSubmissionListPage, outDir, contest, task, language);
+    await writeToDB(firstSubmissionListPage, options, contest, task, language);
 
     // 2ページ目以降をクロール
     for (let page = 2; page < totalPage; page++) {
@@ -48,7 +44,7 @@ async function crawle(outDir, contest, task, language) {
             // エラーが起きても実行を続ける
             const submissionListPage
                 = await fetcher.fetchSubmissionListPage(contest, task, language, page);
-            await writeToFile(submissionListPage, outDir, contest, task, language);
+            await writeToDB(submissionListPage, options, contest, task, language);
         } catch (error) {
             // 404の時のみ終了する
             if (error.name === 'StatusCodeError' && error.stausCode === 404) {
@@ -63,14 +59,21 @@ async function crawle(outDir, contest, task, language) {
     }
 }
 
-async function writeToFile(submissionListPage, outDir, contest, task, language) {
+async function writeToDB(submissionListPage, options, contest, task, language) {
     const links = parser.parseSubmissionListPage(submissionListPage);
     for (let i = 0; i < links.length; i++) {
         const link = links[i];
         const {id, text} = await fetcher.fetchSubmissionPage(link);
         const code = parser.parseSubmissionPage(text);
+        const submission = {
+            submissionId: Number.parseInt(id),
+            contentId: contest,
+            code,
+            language,
+            task: task.toUpperCase(),
+        };
 
-        await writer.writeSourceCode(outDir, contest.toString(), id, task, language, code);
+        await writer.writeSourceCode(options, submission);
     }
 }
 
