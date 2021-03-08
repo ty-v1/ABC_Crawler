@@ -49,7 +49,7 @@ exports.fetchSubmissionListPage = async function (contestId, task, language, pag
  * 提出ページを取得する
  * */
 exports.fetchSubmissionPage = async function (path) {
-    await sleep(1200);
+    await sleep(1000);
 
     const option = {
         url: `https://atcoder.jp${path}`
